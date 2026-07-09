@@ -1,0 +1,358 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────
+// USERS
+// ─────────────────────────────────────────────
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  fullName      String
+  phone         String?
+  gender        String?
+  dateOfBirth   DateTime?
+  avatarUrl     String?
+  emailVerified Boolean   @default(false)
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  profile          Profile?
+  medicalProfile   MedicalProfile?
+  workoutLogs      WorkoutLog[]
+  nutritionLogs    NutritionLog[]
+  weightHistory    WeightHistory[]
+  garden           Garden?
+  userChallenges   UserChallenge[]
+  achievements     Achievement[]
+  notifications    Notification[]
+  settings         UserSettings?
+  passwordResets   PasswordReset[]
+  emailTokens      EmailVerificationToken[]
+
+  @@index([email])
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────
+// PROFILES
+// ─────────────────────────────────────────────
+model Profile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  height          Float?    // cm
+  weight          Float?    // kg
+  goalWeight      Float?    // kg
+  goalType        String?   // "Lose Weight" | "Gain Muscle" | "Maintain" | "Endurance"
+  activityLevel   String?   // "Sedentary" | "Light" | "Moderate" | "Active" | "Very Active"
+  dailyCalories   Int?      // kcal target
+  dailyProtein    Int?      // g target
+  dailyWater      Float?    // Liters target
+  dailySleep      Float?    // hours target
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("profiles")
+}
+
+// ─────────────────────────────────────────────
+// MEDICAL PROFILE
+// ─────────────────────────────────────────────
+model MedicalProfile {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  healthConditions     String[] // e.g. ["Diabetes", "Hypertension"]
+  injuries             String[] // e.g. ["Lower Back", "Knee"]
+  medications          String[]
+  dietaryPreferences   String[] // e.g. ["Vegetarian", "Gluten-Free"]
+  lifestyle            String?  // "Sedentary" | "Active"
+  profession           String?
+  recoveryMode         Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("medical_profiles")
+}
+
+// ─────────────────────────────────────────────
+// WORKOUTS (master plans)
+// ─────────────────────────────────────────────
+model Workout {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  difficulty  String   @default("Beginner") // "Beginner" | "Intermediate" | "Advanced"
+  category    String   @default("Strength") // "Strength" | "Cardio" | "HIIT" | "Yoga"
+  duration    Int?     // estimated minutes
+  imageUrl    String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  exercises   Exercise[]
+  logs        WorkoutLog[]
+
+  @@index([category])
+  @@map("workouts")
+}
+
+// ─────────────────────────────────────────────
+// EXERCISES (within a workout)
+// ─────────────────────────────────────────────
+model Exercise {
+  id           String  @id @default(cuid())
+  workoutId    String
+  name         String
+  sets         Int     @default(3)
+  reps         Int     @default(12)
+  restSeconds  Int     @default(60)
+  instructions String?
+  muscleGroup  String?
+  order        Int     @default(0)
+
+  workout Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+
+  @@index([workoutId])
+  @@map("exercises")
+}
+
+// ─────────────────────────────────────────────
+// WORKOUT LOGS (user sessions)
+// ─────────────────────────────────────────────
+model WorkoutLog {
+  id             String    @id @default(cuid())
+  userId         String
+  workoutId      String?
+  title          String
+  durationMins   Int?
+  caloriesBurned Int?
+  totalVolumeKg  Float?
+  exercisesData  Json?     // snapshot of exercises done
+  completed      Boolean   @default(true)
+  completedAt    DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workout Workout? @relation(fields: [workoutId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([completedAt])
+  @@map("workout_logs")
+}
+
+// ─────────────────────────────────────────────
+// NUTRITION LOGS
+// ─────────────────────────────────────────────
+model NutritionLog {
+  id        String   @id @default(cuid())
+  userId    String
+  foodName  String
+  calories  Int
+  protein   Float    @default(0)
+  carbs     Float    @default(0)
+  fat       Float    @default(0)
+  fiber     Float    @default(0)
+  mealType  String   @default("Breakfast") // "Breakfast" | "Lunch" | "Dinner" | "Snack"
+  date      String   // ISO date string YYYY-MM-DD for easy filtering
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@map("nutrition_logs")
+}
+
+// ─────────────────────────────────────────────
+// WEIGHT HISTORY
+// ─────────────────────────────────────────────
+model WeightHistory {
+  id           String   @id @default(cuid())
+  userId       String
+  weight       Float    // kg
+  bodyFat      Float?   // %
+  muscleMass   Float?   // kg
+  recordedAt   DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, recordedAt])
+  @@map("weight_history")
+}
+
+// ─────────────────────────────────────────────
+// GARDEN (gamified tree)
+// ─────────────────────────────────────────────
+model Garden {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  growthStage      Int      @default(0)  // 0-4
+  hydrationLevel   Int      @default(0)  // 0-100
+  consistencyScore Int      @default(0)  // 0-100
+  sunlightLevel    Int      @default(0)  // 0-100
+  plantsUnlocked   Json?    // [{plantId, name, unlockedAt}]
+  lastUpdated      DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("gardens")
+}
+
+// ─────────────────────────────────────────────
+// CHALLENGES (global challenge definitions)
+// ─────────────────────────────────────────────
+model Challenge {
+  id             String  @id @default(cuid())
+  title          String
+  description    String
+  reward         String
+  difficulty     String  @default("Medium")
+  requiredPoints Int     @default(100)
+  type           String  @default("Hydration") // "Hydration" | "Steps" | "Workout" | "Consistency"
+  isActive       Boolean @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  userChallenges UserChallenge[]
+
+  @@map("challenges")
+}
+
+// ─────────────────────────────────────────────
+// USER CHALLENGES (join table)
+// ─────────────────────────────────────────────
+model UserChallenge {
+  id            String    @id @default(cuid())
+  userId        String
+  challengeId   String
+  progress      Int       @default(0)   // 0-100%
+  completed     Boolean   @default(false)
+  rewardClaimed Boolean   @default(false)
+  joinedAt      DateTime  @default(now())
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeId])
+  @@index([userId])
+  @@map("user_challenges")
+}
+
+// ─────────────────────────────────────────────
+// ACHIEVEMENTS
+// ─────────────────────────────────────────────
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  iconKey     String?
+  earnedAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("achievements")
+}
+
+// ─────────────────────────────────────────────
+// NOTIFICATIONS
+// ─────────────────────────────────────────────
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  type      String   @default("info") // "info" | "warning" | "success"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+// ─────────────────────────────────────────────
+// USER SETTINGS
+// ─────────────────────────────────────────────
+model UserSettings {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  theme         String   @default("dark")   // "dark" | "light"
+  language      String   @default("en")
+  timezone      String   @default("Asia/Kolkata")
+  notifications Boolean  @default(true)
+  emailDigest   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+// ─────────────────────────────────────────────
+// PASSWORD RESETS
+// ─────────────────────────────────────────────
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("password_resets")
+}
+
+// ─────────────────────────────────────────────
+// EMAIL VERIFICATION TOKENS
+// ─────────────────────────────────────────────
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("email_verification_tokens")
+}

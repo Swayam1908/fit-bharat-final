@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitBharat — Premium Light UI Prototype</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Syne:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --sage: #7BAE7F;
+      --sage-light: #A8C5AA;
+      --sage-pale: #D4E8D5;
+      --sage-ultra: #EEF6EE;
+      --sage-dark: #4A7A5A;
+      --mint: #C8E6C9;
+      --cream: #F7F9F5;
+      --white: #FFFFFF;
+      --card: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(123, 174, 127, 0.18);
+      --text: #1A2E1C;
+      --text2: #4A6B4E;
+      --text3: #7A9B7E;
+      --text4: #A8BEA9;
+      --orange: #E8845A;
+      --orange-light: #F5A882;
+      --blue: #6B9BB8;
+      --red: #D96B6B;
+      --green: #4CAF72;
+      --tab-bg: rgba(255, 255, 255, 0.92);
+      --shadow: 0 8px 32px rgba(74, 122, 90, 0.12);
+      --shadow-lg: 0 20px 60px rgba(74, 122, 90, 0.18);
+      --shadow-card: 0 4px 20px rgba(74, 122, 90, 0.10);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #E8F5E9 0%, #F1F8F1 40%, #E0EFE1 100%);
+      min-height: 100vh;
+      padding: 28px 16px 60px;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      color: var(--text);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .page-header p {
+      font-size: 13px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+
+    /* NAV */
+    .nav-wrap {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 36px;
+      position: sticky;
+      top: 8px;
+      z-index: 999;
+    }
+
+    .ntab {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1.5px solid rgba(123, 174, 127, 0.25);
+      color: var(--text3);
+      padding: 7px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      backdrop-filter: blur(12px);
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 8px rgba(74, 122, 90, 0.08);
+    }
+
+    .ntab.active,
+    .ntab:hover {
+      background: var(--sage);
+      color: white;
+      border-color: var(--sage);
+      box-shadow: 0 4px 16px rgba(123, 174, 127, 0.35);
+    }
+
+    /* GRID */
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 36px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .sw {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sw.show {
+      display: flex;
+    }
+
+    .slabel {
+      color: var(--sage-dark);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* PHONE FRAME */
+    .phone {
+      width: 300px;
+      height: 640px;
+      border-radius: 44px;
+      overflow: hidden;
+      position: relative;
+      background: var(--cream);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 0 0 1px rgba(123, 174, 127, 0.15),
+        0 32px 80px rgba(74, 122, 90, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    }
+
+    /* HERO BG */
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 260px;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #B8DDB9 0%, #8FC490 50%, #6BAD72 100%);
+    }
+
+    /* ANIMATED SVG FIGURE */
+    .hero-figure {
+      position: absolute;
+      bottom: 0;
+      right: -10px;
+      width: 160px;
+      height: 230px;
+    }
+
+    /* STATUS BAR */
+    .sbar {
+      position: relative;
+      z-index: 20;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .sbar-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sbar-icons {
+      display: flex;
+      gap: 4px;
+      font-size: 10px;
+      color: var(--text2);
+    }
+
+    /* SCROLL AREA */
+    .sc {
+      position: relative;
+      z-index: 5;
+      height: calc(640px - 40px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      padding-bottom: 110px;
+    }
+
+    .sc::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* CARDS */
+    .gc {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 20px rgba(74, 122, 90, 0.09);
+    }
+
+    .gc-sage {
+      background: linear-gradient(135deg, rgba(123, 174, 127, 0.15) 0%, rgba(168, 197, 170, 0.20) 100%);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(123, 174, 127, 0.25);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .gc-dark {
+      background: linear-gradient(135deg, #4A7A5A 0%, #3A6A4A 100%);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .gc-hero {
+      background: linear-gradient(160deg, #8FC490 0%, #6BAD72 100%);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* FLOATING TAB BAR */
+    .tabbar {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 58px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(24px);
+      border-radius: 30px;
+      border: 1.5px solid rgba(123, 174, 127, 0.20);
+      box-shadow: 0 8px 32px rgba(74, 122, 90, 0.18), 0 2px 8px rgba(74, 122, 90, 0.10);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+      z-index: 100;
+    }
+
+    .ti {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+
+    .ti.active {
+      background: var(--sage);
+      box-shadow: 0 4px 12px rgba(123, 174, 127, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .ti svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .ti-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--text4);
+      letter-spacing: 0.3px;
+    }
+
+    .ti.active .ti-label {
+      color: white;
+    }
+
+    /* AI FAB */
+    .ai-fab {
+      position: absolute;
+      bottom: 82px;
+      right: 14px;
+      z-index: 99;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      border-radius: 24px;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 6px 24px rgba(74, 122, 90, 0.35);
+      cursor: pointer;
+      animation: fabFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes fabFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    .ai-pulse {
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      position: relative;
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
+      }
+
+      50% {
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0);
+      }
+    }
+
+    .ai-fab-txt {
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+    }
+
+    /* TYPOGRAPHY */
+    .t-display {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .t-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .t-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .t-body {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .t-small {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text2);
+    }
+
+    .t-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .t-white {
+      color: white !important;
+    }
+
+    .t-sage {
+      color: var(--sage-dark) !important;
+    }
+
+    .t-muted {
+      color: var(--text4) !important;
+    }
+
+    .t-orange {
+      color: var(--orange) !important;
+    }
+
+    .t-green {
+      color: var(--green) !important;
+    }
+
+    .t-red {
+      color: var(--red) !important;
+    }
+
+    /* PILLS */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .pill-sage {
+      background: rgba(123, 174, 127, 0.15);
+      color: var(--sage-dark);
+      border: 1.5px solid rgba(123, 174, 127, 0.25);
+    }
+
+    .pill-green {
+      background: rgba(76, 175, 114, 0.12);
+      color: var(--green);
+      border: 1.5px solid rgba(76, 175, 114, 0.2);
+    }
+
+    .pill-orange {
+      background: rgba(232, 132, 90, 0.12);
+      color: var(--orange);
+      border: 1.5px solid rgba(232, 132, 90, 0.2);
+    }
+
+    .pill-red {
+      background: rgba(217, 107, 107, 0.12);
+      color: var(--red);
+      border: 1.5px solid rgba(217, 107, 107, 0.2);
+    }
+
+    .pill-white {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text);
+      border: 1.5px solid rgba(255, 255, 255, 1);
+    }
+
+    .pill-glass {
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--text2);
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
+    }
+
+    /* PROGRESS BAR */
+    .prog-wrap {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(123, 174, 127, 0.15);
+      overflow: hidden;
+    }
+
+    .prog-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--sage), var(--sage-dark));
+      transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .prog-fill-orange {
+      background: linear-gradient(90deg, #F5A882, #E8845A);
+    }
+
+    /* INPUTS */
+    .inp-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .inp {
+      width: 100%;
+      background: rgba(123, 174, 127, 0.08);
+      border: 1.5px solid rgba(123, 174, 127, 0.18);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+    }
+
+    .inp::placeholder {
+      color: var(--text4);
+    }
+
+    /* BUTTONS */
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-sage {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(74, 122, 90, 0.3);
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--sage-dark);
+      border: 1.5px solid rgba(123, 174, 127, 0.2);
+      box-shadow: 0 4px 12px rgba(74, 122, 90, 0.1);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--sage-dark);
+      border: 1.5px solid rgba(123, 174, 127, 0.4);
+    }
+
+    .btn-sm-sage {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 4px 12px rgba(74, 122, 90, 0.25);
+    }
+
+    .btn-sm-white {
+      background: white;
+      color: var(--text);
+      border: 1.5px solid rgba(123, 174, 127, 0.2);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-sm-orange {
+      background: linear-gradient(135deg, #F5A882, #E8845A);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* GOAL PILLS */
+    .goal-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .goal-pill {
+      flex: 1;
+      background: rgba(123, 174, 127, 0.08);
+      border: 1.5px solid rgba(123, 174, 127, 0.18);
+      border-radius: 12px;
+      padding: 9px 6px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text3);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      min-width: 60px;
+    }
+
+    .goal-pill.active {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: white;
+      box-shadow: 0 4px 12px rgba(74, 122, 90, 0.25);
+    }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stat-item {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(74, 122, 90, 0.07);
+    }
+
+    /* WORKOUT CARD */
+    .wcard {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.12);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 8px;
+      box-shadow: 0 3px 14px rgba(74, 122, 90, 0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .wcard:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 122, 90, 0.13);
+    }
+
+    .wcard-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sage-pale) 0%, var(--mint) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* MOOD */
+    .mood-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+    }
+
+    .mood-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border-radius: 12px;
+      background: rgba(123, 174, 127, 0.08);
+      border: 1.5px solid rgba(123, 174, 127, 0.15);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mood-btn.sel {
+      background: var(--sage);
+      border-color: var(--sage);
+    }
+
+    .mood-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 0 auto 3px;
+    }
+
+    /* SET ROW */
+    .set-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .set-num {
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(135deg, var(--sage-pale), var(--mint));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--sage-dark);
+      flex-shrink: 0;
+    }
+
+    .set-inp {
+      flex: 1;
+      background: rgba(123, 174, 127, 0.08);
+      border: 1.5px solid rgba(123, 174, 127, 0.18);
+      border-radius: 10px;
+      padding: 7px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* EX ITEM */
+    .ex-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+    }
+
+    .ex-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--sage-pale), var(--mint));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ex-add {
+      width: 28px;
+      height: 28px;
+      background: var(--sage);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* MEAL ROW */
+    .meal-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1.5px solid rgba(123, 174, 127, 0.10);
+    }
+
+    /* DAY CARD */
+    .day-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.12);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 6px;
+      box-shadow: 0 2px 10px rgba(74, 122, 90, 0.06);
+    }
+
+    .day-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--sage-pale), var(--mint));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--sage-dark);
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+    }
+
+    .day-dot.rest {
+      background: linear-gradient(135deg, #FFE0D0, #FFD0BC);
+      color: var(--orange);
+    }
+
+    /* INSIGHT CARD */
+    .insight {
+      background: white;
+      border-left: 3px solid var(--sage);
+      border-radius: 0 14px 14px 0;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      box-shadow: 0 3px 12px rgba(74, 122, 90, 0.07);
+    }
+
+    .insight.warn {
+      border-left-color: var(--orange);
+    }
+
+    /* COND GRID */
+    .cond-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .cond-btn {
+      background: rgba(123, 174, 127, 0.08);
+      border: 1.5px solid rgba(123, 174, 127, 0.18);
+      border-radius: 12px;
+      padding: 9px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .cond-btn.active {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: white;
+    }
+
+    /* RING */
+    .ring-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+    }
+
+    .ring-wrap svg {
+      transform: rotate(-90deg);
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* NL BOX */
+    .nl-box {
+      background: linear-gradient(135deg, rgba(123, 174, 127, 0.08), rgba(168, 197, 170, 0.12));
+      border: 1.5px dashed rgba(123, 174, 127, 0.35);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* ADMIN STAT */
+    .admin-stat {
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.15);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(74, 122, 90, 0.07);
+    }
+
+    /* CHAT */
+    .chat-hdr {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1.5px solid rgba(123, 174, 127, 0.12);
+      box-shadow: 0 2px 12px rgba(74, 122, 90, 0.07);
+    }
+
+    .chat-av {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .msg-ai {
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.15);
+      border-radius: 4px 18px 18px 18px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: var(--text);
+      max-width: 82%;
+      line-height: 1.6;
+      box-shadow: 0 2px 10px rgba(74, 122, 90, 0.07);
+    }
+
+    .msg-user {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      border-radius: 18px 4px 18px 18px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: white;
+      max-width: 82%;
+      align-self: flex-end;
+      line-height: 1.6;
+    }
+
+    .chip {
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.2);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text2);
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(74, 122, 90, 0.08);
+    }
+
+    .chat-inp-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(20px);
+      border-top: 1.5px solid rgba(123, 174, 127, 0.12);
+      padding: 10px 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chat-inp {
+      flex: 1;
+      background: rgba(123, 174, 127, 0.08);
+      border: 1.5px solid rgba(123, 174, 127, 0.18);
+      border-radius: 22px;
+      padding: 9px 14px;
+      font-size: 12px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+    }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(74, 122, 90, 0.3);
+      flex-shrink: 0;
+    }
+
+    /* HERO SECTIONS */
+    .screen-hero {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+      border-radius: 0 0 30px 30px;
+      margin-bottom: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(transparent, var(--cream));
+    }
+
+    /* BMI SCALE */
+    .bmi-scale {
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #6BB6E8 0%, var(--sage) 30%, #F5A882 65%, #E05555 100%);
+      position: relative;
+    }
+
+    .bmi-marker {
+      position: absolute;
+      top: -3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--sage-dark);
+      transform: translateX(-50%);
+      box-shadow: 0 2px 8px rgba(74, 122, 90, 0.3);
+    }
+
+    /* SLEEP QUALITY DOTS */
+    .sleep-week {
+      display: flex;
+      gap: 4px;
+    }
+
+    .sleep-day {
+      flex: 1;
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.15);
+      border-radius: 10px;
+      padding: 7px 2px;
+      text-align: center;
+    }
+
+    .sleep-day.active {
+      background: var(--sage);
+      border-color: var(--sage);
+    }
+
+    /* TOGGLE */
+    .toggle {
+      width: 46px;
+      height: 26px;
+      background: rgba(123, 174, 127, 0.2);
+      border-radius: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .toggle.on {
+      background: var(--sage);
+    }
+
+    .toggle-thumb {
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .toggle.on .toggle-thumb {
+      left: 23px;
+    }
+
+    /* AVATAR */
+    .avatar-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage-pale), var(--sage-light));
+      border: 2.5px solid rgba(123, 174, 127, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--sage-dark);
+    }
+
+    /* LINK CARD */
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      border: 1.5px solid rgba(123, 174, 127, 0.12);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 10px rgba(74, 122, 90, 0.06);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .link-card:hover {
+      transform: translateX(4px);
+    }
+
+    .link-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--sage-pale), var(--mint));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* SP PADDING */
+    .sp {
+      padding: 0 14px;
+    }
+
+    /* SECTION HEADER */
+    .sh {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0 10px;
+      padding: 0 14px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .anim-up {
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    .anim-breathe {
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    /* BMI RING SVG helper */
+    circle.track {
+      fill: none;
+      stroke: rgba(123, 174, 127, 0.15);
+      stroke-width: 10;
+    }
+
+    circle.fill {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+    }
+
+    /* ===== SCREEN SPECIFIC ===== */
+    .splash-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 32px;
+    }
+
+    .splash-logo {
+      width: 72px;
+      height: 72px;
+      background: white;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(74, 122, 90, 0.2);
+    }
+
+    .splash-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #C8E6C9 0%, #A8D5AA 40%, #8EC48F 100%);
+    }
+
+    .splash-blob1 {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
+      top: -80px;
+      left: -60px;
+    }
+
+    .splash-blob2 {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74, 122, 90, 0.3), transparent);
+      bottom: 60px;
+      right: -40px;
+    }
+
+    /* Gender avatar animated */
+    .girl-figure {
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    .boy-figure {
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    /* Progress ring animation */
+    @keyframes ringFill {
+      from {
+        stroke-dashoffset: 251;
+      }
+    }
+
+    circle.fill {
+      animation: ringFill 1.5s ease forwards;
+    }
+
+    .seg {
+      display: flex;
+      background: rgba(123, 174, 127, 0.10);
+      border-radius: 12px;
+      padding: 3px;
+      margin-bottom: 12px;
+    }
+
+    .seg-btn {
+      flex: 1;
+      padding: 7px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .seg-btn.active {
+      background: white;
+      color: var(--sage-dark);
+      box-shadow: 0 2px 8px rgba(74, 122, 90, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-header">
+    <h1>FitBharat — v2 Prototype</h1>
+    <p>Sage Green · Light UI Kit · All 18 Screens</p>
+  </div>
+
+  <div class="nav-wrap">
+    <button class="ntab active" onclick="show('auth',this)">Auth</button>
+    <button class="ntab" onclick="show('dash',this)">Dashboard</button>
+    <button class="ntab" onclick="show('workout',this)">Workout</button>
+    <button class="ntab" onclick="show('nutrition',this)">Nutrition</button>
+    <button class="ntab" onclick="show('health',this)">Health</button>
+    <button class="ntab" onclick="show('ai',this)">AI Features</button>
+    <button class="ntab" onclick="show('profile',this)">Profile</button>
+    <button class="ntab" onclick="show('all',this)">All Screens</button>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- ══════════ SPLASH ══════════ -->
+    <div class="sw show" data-g="auth">
+      <p class="slabel">Splash</p>
+      <div class="phone" style="padding: 0;">
+        <img src="files/Splash.png" style="width: 100%; height: 100%; object-fit: cover; display: block;"
+          alt="Splash Screen">
+      </div>
+    </div>
+
+    <!-- ══════════ LOGIN ══════════ -->
+    <div class="sw show" data-g="auth">
+      <p class="slabel">Login</p>
+      <div class="phone">
+        <div class="screen-hero"
+          style="background-image: url('files/Login.png'); background-size: 100% auto; background-position: top center; background-repeat: no-repeat; height: 250px;">
+          <div class="hero-overlay" style="height: 100px; background: linear-gradient(transparent, var(--cream));">
+          </div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div style="padding:20px 14px;">
+            <div class="gc" style="margin-bottom:12px;">
+              <div style="margin-bottom:10px;">
+                <span class="inp-label">EMAIL ADDRESS</span>
+                <input class="inp" value="swayam@gmail.com">
+              </div>
+              <div>
+                <span class="inp-label">PASSWORD</span>
+                <input class="inp" type="password" value="••••••••">
+              </div>
+              <div style="text-align:right;margin-top:8px;">
+                <span class="t-small t-sage" style="cursor:pointer;">Forgot password?</span>
+              </div>
+            </div>
+            <button class="btn btn-sage" style="margin-bottom:10px;">Sign In</button>
+            <button class="btn btn-white" style="margin-bottom:20px;">Create New Account</button>
+            <div style="text-align:center;"><span class="t-label">Terms & Privacy Policy</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ REGISTER ══════════ -->
+    <div class="sw show" data-g="auth">
+      <p class="slabel">Register</p>
+      <div class="phone">
+        <div class="sbar" style="background:var(--sage-ultra);"><span class="sbar-time">9:41</span>
+          <div class="sbar-icons"><span>▲▲▲</span></div>
+        </div>
+        <div class="sc" style="background:var(--cream);">
+          <div style="padding:14px;">
+            <div style="margin-bottom:18px;">
+              <div class="t-label t-sage" style="margin-bottom:5px;">STEP 1 OF 2</div>
+              <div
+                style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);margin-bottom:12px;">
+                Create Account</div>
+              <div class="prog-wrap">
+                <div class="prog-fill" style="width:50%;"></div>
+              </div>
+            </div>
+            <!-- Gender selector replaced with image -->
+            <div
+              style="margin-bottom: 10px; width: 100%; border-radius: 20px; overflow: hidden; background: transparent;">
+              <img src="files/Register.png"
+                style="width: 100%; display: block; mix-blend-mode: darken; object-fit: contain;" alt="Gender Selector">
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <span class="inp-label">FULL NAME</span>
+              <input class="inp" placeholder="Swayam Gurjar" style="margin-bottom:10px;">
+              <span class="inp-label">EMAIL</span>
+              <input class="inp" placeholder="you@example.com" style="margin-bottom:10px;">
+              <span class="inp-label">PASSWORD</span>
+              <input class="inp" type="password" placeholder="Min 6 characters">
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <span class="inp-label" style="margin-bottom:8px;">YOUR GOAL</span>
+              <div class="goal-row">
+                <div class="goal-pill active">Lose Weight</div>
+                <div class="goal-pill">Gain Muscle</div>
+                <div class="goal-pill">Stay Fit</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div><span class="inp-label">HEIGHT (cm)</span><input class="inp" placeholder="175"></div>
+                <div><span class="inp-label">WEIGHT (kg)</span><input class="inp" placeholder="68"></div>
+              </div>
+            </div>
+            <button class="btn btn-sage">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ DASHBOARD ══════════ -->
+    <div class="sw" data-g="dash">
+      <p class="slabel">Dashboard</p>
+      <div class="phone">
+        <!-- Hero Section with girl figure -->
+        <div class="screen-hero"
+          style="background-image: url('files/Dashboard\ \(1\).png'); background-size: 100% auto; background-position: top center; background-repeat: no-repeat; height: 230px;">
+          <div class="hero-overlay" style="height: 80px; background: linear-gradient(transparent, var(--cream));"></div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div class="sp" style="padding-top:10px;">
+            <!-- Quick Stats -->
+            <div class="stat-grid" style="margin-bottom:12px;">
+              <div class="stat-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7BAE7F" stroke-width="2"
+                  stroke-linecap="round" style="margin-bottom:5px;">
+                  <path d="M6 4v6a6 6 0 0012 0V4" />
+                  <line x1="12" y1="4" x2="12" y2="2" />
+                </svg>
+                <div class="t-title" style="font-size:13px;color:var(--sage-dark);">Done</div>
+                <div class="t-label">Workout</div>
+              </div>
+              <div class="stat-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8845A" stroke-width="2"
+                  stroke-linecap="round" style="margin-bottom:5px;">
+                  <path
+                    d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z" />
+                </svg>
+                <div class="t-title" style="font-size:13px;color:var(--orange);">1,840</div>
+                <div class="t-label">/ 2,200 cal</div>
+              </div>
+              <div class="stat-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7BAE7F" stroke-width="2"
+                  stroke-linecap="round" style="margin-bottom:5px;">
+                  <path d="M12 3a6.364 6.364 0 019 9 7 7 0 11-9-9z" />
+                </svg>
+                <div class="t-title" style="font-size:13px;color:var(--sage-dark);">7.5</div>
+                <div class="t-label">hrs sleep</div>
+              </div>
+            </div>
+
+            <!-- Calorie Card -->
+            <div class="gc-sage" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div class="t-label" style="margin-bottom:3px;">TODAY'S NUTRITION</div>
+                  <div
+                    style="font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--text);letter-spacing:-1px;line-height:1;">
+                    1,840</div>
+                  <div class="t-small" style="color:var(--text3);">of 2,200 kcal</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="t-small" style="font-weight:700;color:var(--sage-dark);">142g <span
+                      class="t-label">Protein</span></div>
+                  <div class="t-small" style="font-weight:700;color:var(--text2);margin-top:4px;">210g <span
+                      class="t-label">Carbs</span></div>
+                  <div class="t-small" style="font-weight:700;color:var(--orange);margin-top:4px;">58g <span
+                      class="t-label">Fat</span></div>
+                </div>
+              </div>
+              <div class="prog-wrap">
+                <div class="prog-fill" style="width:84%;"></div>
+              </div>
+              <div class="t-label" style="margin-top:5px;color:var(--sage-dark);">84% of daily goal</div>
+            </div>
+
+            <!-- Mood Check-in -->
+            <div class="gc" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div>
+                  <div class="t-title">How are you feeling?</div>
+                  <div class="t-small t-muted">Daily check-in</div>
+                </div>
+                <span class="pill pill-sage">Check in</span>
+              </div>
+              <div class="mood-row">
+                <div class="mood-btn">
+                  <div class="mood-dot" style="background:#D96B6B;"></div>
+                  <div style="font-size:7px;color:var(--text3);font-weight:700;">Terrible</div>
+                </div>
+                <div class="mood-btn">
+                  <div class="mood-dot" style="background:#E8845A;"></div>
+                  <div style="font-size:7px;color:var(--text3);font-weight:700;">Bad</div>
+                </div>
+                <div class="mood-btn sel">
+                  <div class="mood-dot" style="background:white;"></div>
+                  <div style="font-size:7px;color:white;font-weight:700;">Okay</div>
+                </div>
+                <div class="mood-btn">
+                  <div class="mood-dot" style="background:#7BAE7F;"></div>
+                  <div style="font-size:7px;color:var(--text3);font-weight:700;">Good</div>
+                </div>
+                <div class="mood-btn">
+                  <div class="mood-dot" style="background:#4CAF72;"></div>
+                  <div style="font-size:7px;color:var(--text3);font-weight:700;">Great</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transformation Progress -->
+            <div class="gc" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div class="t-title">Transformation</div>
+                <span class="pill pill-orange">35% done</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span class="t-small">68 kg</span><span class="t-small">63 kg</span>
+              </div>
+              <div class="prog-wrap">
+                <div class="prog-fill" style="width:35%;"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:6px;">
+                <div class="t-label t-sage">Current</div>
+                <div class="t-small t-muted">Est. Aug 2026</div>
+                <div class="t-label t-sage">Goal</div>
+              </div>
+            </div>
+
+            <!-- AI Suggestion -->
+            <div class="gc" style="border-left:3px solid var(--orange);margin-bottom:10px;">
+              <div class="t-label t-orange" style="margin-bottom:5px;">AI SUGGESTION</div>
+              <div class="t-title">Pull Day — Back & Biceps</div>
+              <div class="t-small t-muted" style="margin-top:2px;margin-bottom:10px;">Based on your last 7 days · 6
+                exercises</div>
+              <button class="btn-sm-orange">Start Workout</button>
+            </div>
+
+            <!-- Quick Log -->
+            <div class="t-label" style="margin-bottom:8px;">QUICK LOG</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+              <div
+                style="background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 2px 10px rgba(74,122,90,0.07);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7BAE7F" stroke-width="2"
+                  stroke-linecap="round" style="margin-bottom:5px;">
+                  <path d="M6 4v6a6 6 0 0012 0V4" />
+                  <line x1="12" y1="4" x2="12" y2="2" />
+                </svg>
+                <div class="t-label" style="font-size:7px;">LOG WORKOUT</div>
+              </div>
+              <div
+                style="background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 2px 10px rgba(74,122,90,0.07);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7BAE7F" stroke-width="2"
+                  stroke-linecap="round" style="margin-bottom:5px;">
+                  <path d="M18 8h1a4 4 0 010 8h-1" />
+                  <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+                </svg>
+                <div class="t-label" style="font-size:7px;">LOG MEAL</div>
+              </div>
+              <div
+                style="background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 2px 10px rgba(74,122,90,0.07);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7BAE7F" stroke-width="2"
+                  stroke-linecap="round" style="margin-bottom:5px;">
+                  <path d="M12 3a6.364 6.364 0 019 9 7 7 0 11-9-9z" />
+                </svg>
+                <div class="t-label" style="font-size:7px;">LOG SLEEP</div>
+              </div>
+            </div>
+
+            <!-- BMI -->
+            <div class="gc" style="border-left:3px solid var(--sage);margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div class="t-label" style="margin-bottom:3px;">YOUR BMI</div>
+                  <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--text);">
+                    22.4</div>
+                  <span class="pill pill-green" style="font-size:9px;">Normal Weight</span>
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2"
+                  stroke-linecap="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+        <div class="tabbar">
+          <div class="ti active"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+              stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg><span class="ti-label">Home</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M6 4v6a6 6 0 0012 0V4" />
+              <line x1="12" y1="4" x2="12" y2="2" />
+            </svg><span class="ti-label">Workout</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M18 8h1a4 4 0 010 8h-1" />
+              <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+            </svg><span class="ti-label">Nutrition</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg><span class="ti-label">Profile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ WORKOUT LIST ══════════ -->
+    <div class="sw" data-g="workout">
+      <p class="slabel">Workout History</p>
+      <div class="phone">
+        <div class="sbar" style="background:white;"><span class="sbar-time">9:41</span>
+          <div class="sbar-icons"><span>▲▲▲</span></div>
+        </div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp">
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-top:8px;">
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);">Workouts
+              </div>
+              <button class="btn-sm-sage">+ New</button>
+            </div>
+            <div class="stat-grid" style="margin-bottom:14px;">
+              <div class="stat-item">
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--sage-dark);">12
+                </div>
+                <div class="t-label">This Month</div>
+              </div>
+              <div class="stat-item">
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--sage-dark);">4
+                </div>
+                <div class="t-label">This Week</div>
+              </div>
+              <div class="stat-item">
+                <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--orange);">3
+                </div>
+                <div class="t-label">PRs Set</div>
+              </div>
+            </div>
+            <div class="wcard">
+              <div class="wcard-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                  stroke-width="2" stroke-linecap="round">
+                  <path d="M6 4v6a6 6 0 0012 0V4" />
+                  <line x1="12" y1="4" x2="12" y2="2" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title" style="margin-bottom:2px;">Push Day</div>
+                <div class="t-label" style="margin-bottom:5px;">Bench Press · Shoulder Press</div>
+                <div style="display:flex;gap:5px;"><span class="pill pill-sage" style="font-size:8px;">Today</span><span
+                    class="pill pill-orange" style="font-size:8px;">PR Set</span></div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+            <div class="wcard">
+              <div class="wcard-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                  stroke-width="2" stroke-linecap="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title" style="margin-bottom:2px;">Leg Day</div>
+                <div class="t-label" style="margin-bottom:5px;">Squats · Leg Press · Lunges</div>
+                <div style="display:flex;gap:5px;"><span class="pill pill-glass"
+                    style="font-size:8px;">Yesterday</span><span class="pill pill-glass" style="font-size:8px;">52
+                    mins</span></div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+            <div class="wcard">
+              <div class="wcard-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                  stroke-width="2" stroke-linecap="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title" style="margin-bottom:2px;">Pull Day</div>
+                <div class="t-label" style="margin-bottom:5px;">Deadlift · Pull-ups · Row</div>
+                <div style="display:flex;gap:5px;"><span class="pill pill-glass" style="font-size:8px;">2 days
+                    ago</span><span class="pill pill-orange" style="font-size:8px;">PR</span></div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+            <div class="wcard">
+              <div class="wcard-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                  stroke-width="2" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title" style="margin-bottom:2px;">Cardio + Core</div>
+                <div class="t-label" style="margin-bottom:5px;">Treadmill · Plank · Crunches</div>
+                <div style="display:flex;gap:5px;"><span class="pill pill-glass" style="font-size:8px;">3 days
+                    ago</span><span class="pill pill-glass" style="font-size:8px;">35 mins</span></div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+        <div class="tabbar">
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg><span class="ti-label">Home</span></div>
+          <div class="ti active"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M6 4v6a6 6 0 0012 0V4" />
+              <line x1="12" y1="4" x2="12" y2="2" />
+            </svg><span class="ti-label">Workout</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M18 8h1a4 4 0 010 8h-1" />
+              <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+            </svg><span class="ti-label">Nutrition</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg><span class="ti-label">Profile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ LOG WORKOUT ══════════ -->
+    <div class="sw" data-g="workout">
+      <p class="slabel">Log Workout</p>
+      <div class="phone">
+        <div class="sbar" style="background:var(--sage-ultra);"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp">
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-top:4px;">
+              <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);">Log Workout
+              </div>
+              <button class="btn-sm-sage">Save</button>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <span class="inp-label">WORKOUT TITLE</span>
+              <input class="inp" value="Push Day" style="margin-bottom:10px;">
+              <span class="inp-label">TYPE</span>
+              <div class="goal-row" style="margin-top:5px;">
+                <div class="goal-pill active">Strength</div>
+                <div class="goal-pill">Cardio</div>
+                <div class="goal-pill">HIIT</div>
+                <div class="goal-pill">Yoga</div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div class="t-title">Search Exercises</div>
+                <span class="pill pill-sage" style="font-size:8px;">873 available</span>
+              </div>
+              <input class="inp" placeholder="bench press, squats..." style="margin-bottom:8px;">
+              <div class="ex-item">
+                <div class="ex-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                    stroke-width="2" stroke-linecap="round">
+                    <path d="M6 4v6a6 6 0 0012 0V4" />
+                    <line x1="12" y1="4" x2="12" y2="2" />
+                  </svg></div>
+                <div style="flex:1;">
+                  <div class="t-small" style="font-weight:700;">Bench Press</div>
+                  <div class="t-label">Chest · Barbell</div>
+                </div>
+                <div class="ex-add"><span style="color:white;font-size:16px;line-height:1;">+</span></div>
+              </div>
+              <div class="ex-item">
+                <div class="ex-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                    stroke-width="2" stroke-linecap="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg></div>
+                <div style="flex:1;">
+                  <div class="t-small" style="font-weight:700;">Shoulder Press</div>
+                  <div class="t-label">Shoulders · Dumbbell</div>
+                </div>
+                <div class="ex-add"><span style="color:white;font-size:16px;line-height:1;">+</span></div>
+              </div>
+            </div>
+            <div class="gc">
+              <div class="t-title" style="margin-bottom:10px;">Bench Press — Sets</div>
+              <div style="display:grid;grid-template-columns:26px 1fr 1fr;gap:6px;margin-bottom:5px;">
+                <span></span>
+                <div class="t-label" style="text-align:center;">REPS</div>
+                <div class="t-label" style="text-align:center;">WEIGHT (kg)</div>
+              </div>
+              <div class="set-row">
+                <div class="set-num">1</div><input class="set-inp" value="10"><input class="set-inp" value="65">
+              </div>
+              <div class="set-row">
+                <div class="set-num">2</div><input class="set-inp" value="10"><input class="set-inp" value="65">
+              </div>
+              <div class="set-row">
+                <div class="set-num">3</div><input class="set-inp" value="8"><input class="set-inp" value="67.5">
+              </div>
+              <div
+                style="border:1.5px dashed rgba(123,174,127,0.35);border-radius:10px;padding:8px;text-align:center;margin-top:6px;cursor:pointer;">
+                <span class="t-small t-sage">+ Add Set</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ WORKOUT DETAIL ══════════ -->
+    <div class="sw" data-g="workout">
+      <p class="slabel">Workout Detail</p>
+      <div class="phone">
+        <div class="screen-hero" style="height:180px;">
+          <div
+            style="position:absolute;inset:0;background:linear-gradient(160deg,#B8DDB9 0%,#93C795 60%,#6BAD72 100%);">
+          </div>
+          <div style="position:absolute;top:12px;left:16px;right:16px;">
+            <div class="sbar-time" style="color:white;font-size:11px;margin-bottom:10px;">9:41</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div>
+                <div class="t-label" style="color:rgba(255,255,255,0.75);margin-bottom:3px;">TODAY'S WORKOUT</div>
+                <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;">Push Day</div>
+              </div>
+              <span class="pill pill-white" style="font-size:9px;">+8.3%</span>
+            </div>
+          </div>
+          <div class="hero-overlay" style="height:60px;background:linear-gradient(transparent,var(--cream));"></div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div class="sp" style="padding-top:10px;">
+            <div class="gc-sage" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-around;text-align:center;">
+                <div>
+                  <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--text);">3
+                  </div>
+                  <div class="t-label">Exercises</div>
+                </div>
+                <div style="width:1px;background:rgba(123,174,127,0.2);"></div>
+                <div>
+                  <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--text);">45
+                  </div>
+                  <div class="t-label">Minutes</div>
+                </div>
+                <div style="width:1px;background:rgba(123,174,127,0.2);"></div>
+                <div>
+                  <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--text);">
+                    4.2k</div>
+                  <div class="t-label">kg Volume</div>
+                </div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-title" style="margin-bottom:10px;">vs Last Session</div>
+              <div class="meal-row"><span class="t-body">Bench Press</span>
+                <div style="display:flex;gap:8px;align-items:center;"><span class="t-label">60kg</span><span
+                    class="t-small" style="font-weight:700;">65kg</span><span class="t-small t-green"
+                    style="font-weight:700;">+8.3%</span></div>
+              </div>
+              <div class="meal-row"><span class="t-body">Shoulder Press</span>
+                <div style="display:flex;gap:8px;align-items:center;"><span class="t-label">40kg</span><span
+                    class="t-small" style="font-weight:700;">40kg</span><span class="t-label t-muted">—</span></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:9px;"><span
+                  class="t-body">Tricep Dips</span>
+                <div style="display:flex;gap:8px;align-items:center;"><span class="t-label">×10</span><span
+                    class="t-small" style="font-weight:700;">×12</span><span class="t-small t-green"
+                    style="font-weight:700;">+20%</span></div>
+              </div>
+            </div>
+            <div class="gc" style="border-left:3px solid var(--orange);margin-bottom:10px;">
+              <div class="t-label t-orange" style="margin-bottom:4px;">PERSONAL RECORD</div>
+              <div class="t-title">Bench Press — 65 kg</div>
+              <div class="t-small t-muted">Previous best: 60 kg</div>
+            </div>
+            <div class="gc">
+              <div class="t-title" style="margin-bottom:6px;">Recovery Note</div>
+              <div class="t-body">Chest, Shoulders & Triceps trained. Rest 48 hours.</div>
+              <div style="margin-top:8px;"><span class="t-label t-sage">Next recommended — </span><span class="t-small"
+                  style="font-weight:700;">Pull Day</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ NUTRITION TODAY ══════════ -->
+    <div class="sw" data-g="nutrition">
+      <p class="slabel">Nutrition Today</p>
+      <div class="phone">
+        <div class="sbar" style="background:white;"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp" style="padding-top:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);">Nutrition
+              </div>
+              <button class="btn-sm-sage">+ Log Meal</button>
+            </div>
+            <div class="gc-dark" style="margin-bottom:10px;text-align:center;">
+              <div class="t-label" style="color:rgba(255,255,255,0.65);margin-bottom:4px;">TODAY'S CALORIES</div>
+              <div
+                style="font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:white;letter-spacing:-2px;line-height:1;">
+                1,840</div>
+              <div class="t-body" style="color:rgba(255,255,255,0.6);margin-bottom:14px;">of 2,200 kcal target</div>
+              <div
+                style="height:8px;border-radius:4px;background:rgba(255,255,255,0.15);overflow:hidden;margin-bottom:12px;">
+                <div style="height:100%;width:84%;border-radius:4px;background:linear-gradient(90deg,#A8D5AA,#C8E6C9);">
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-around;">
+                <div>
+                  <div class="t-small t-white" style="font-weight:700;">142g</div>
+                  <div class="t-label" style="color:rgba(255,255,255,0.5);">Protein</div>
+                </div>
+                <div>
+                  <div class="t-small t-white" style="font-weight:700;">210g</div>
+                  <div class="t-label" style="color:rgba(255,255,255,0.5);">Carbs</div>
+                </div>
+                <div>
+                  <div class="t-small t-white" style="font-weight:700;">58g</div>
+                  <div class="t-label" style="color:rgba(255,255,255,0.5);">Fat</div>
+                </div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-label t-sage" style="margin-bottom:8px;">BREAKFAST</div>
+              <div class="meal-row">
+                <div>
+                  <div class="t-small" style="font-weight:700;">Dal + Roti + Ghee</div>
+                  <div class="t-label" style="margin-top:2px;">P:18g · C:52g · F:12g</div>
+                </div>
+                <div class="t-small t-orange" style="font-weight:700;">480 kcal</div>
+              </div>
+              <div class="t-label t-sage" style="margin:10px 0 8px;">LUNCH</div>
+              <div class="meal-row" style="border:none;">
+                <div>
+                  <div class="t-small" style="font-weight:700;">Rice + Rajma</div>
+                  <div class="t-label" style="margin-top:2px;">P:24g · C:98g · F:6g</div>
+                </div>
+                <div class="t-small t-orange" style="font-weight:700;">620 kcal</div>
+              </div>
+              <div style="height:1px;background:rgba(123,174,127,0.12);margin:10px 0;"></div>
+              <div class="t-label t-sage" style="margin-bottom:8px;">DINNER</div>
+              <div style="text-align:center;padding:10px 0;">
+                <div class="t-body t-muted" style="margin-bottom:10px;">Not logged yet</div><button
+                  class="btn-sm-orange">Log Dinner</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+        <div class="tabbar">
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg><span class="ti-label">Home</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M6 4v6a6 6 0 0012 0V4" />
+              <line x1="12" y1="4" x2="12" y2="2" />
+            </svg><span class="ti-label">Workout</span></div>
+          <div class="ti active"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M18 8h1a4 4 0 010 8h-1" />
+              <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+            </svg><span class="ti-label">Nutrition</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg><span class="ti-label">Profile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ LOG MEAL ══════════ -->
+    <div class="sw" data-g="nutrition">
+      <p class="slabel">Log Meal (AI)</p>
+      <div class="phone">
+        <div class="sbar" style="background:var(--sage-ultra);"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp">
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-top:4px;">
+              <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;">Log Meal</div>
+              <button class="btn-sm-sage">Save</button>
+            </div>
+            <div class="goal-row" style="margin-bottom:12px;">
+              <div class="goal-pill active">Breakfast</div>
+              <div class="goal-pill">Lunch</div>
+              <div class="goal-pill">Dinner</div>
+              <div class="goal-pill">Snack</div>
+            </div>
+            <div class="nl-box">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A" stroke-width="1.5"
+                stroke-linecap="round" style="margin-bottom:8px;">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4l3 3" />
+              </svg>
+              <div class="t-small" style="margin-bottom:8px;font-weight:700;color:var(--text);">Describe your meal in
+                plain words</div>
+              <div class="t-body t-muted" style="margin-bottom:12px;">AI will extract calories & macros automatically
+              </div>
+              <input class="inp" placeholder="e.g. I had dal chawal with ghee and lassi" style="margin-bottom:10px;">
+              <button class="btn-sm-sage" style="width:100%;padding:11px;font-size:12px;">✦ Parse with AI</button>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div class="t-title">Dal Chawal Meal</div>
+                <span class="pill pill-green" style="font-size:8px;">High confidence</span>
+              </div>
+              <div style="display:flex;justify-content:space-around;margin-bottom:14px;">
+                <div style="text-align:center;">
+                  <div
+                    style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--sage-dark);">
+                    480</div>
+                  <div class="t-label">Calories</div>
+                </div>
+                <div style="text-align:center;">
+                  <div
+                    style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--sage-dark);">
+                    18g</div>
+                  <div class="t-label">Protein</div>
+                </div>
+                <div style="text-align:center;">
+                  <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text2);">
+                    52g</div>
+                  <div class="t-label">Carbs</div>
+                </div>
+                <div style="text-align:center;">
+                  <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--orange);">
+                    12g</div>
+                  <div class="t-label">Fat</div>
+                </div>
+              </div>
+              <div class="meal-row">
+                <div>
+                  <div class="t-small" style="font-weight:700;">Toor Dal (150g)</div>
+                  <div class="t-label">P:7g · C:20g · F:0g</div>
+                </div>
+                <div class="t-small t-orange" style="font-weight:700;">174 kcal</div>
+              </div>
+              <div class="meal-row" style="border:none;">
+                <div>
+                  <div class="t-small" style="font-weight:700;">Basmati Rice (200g)</div>
+                  <div class="t-label">P:3g · C:28g · F:0g</div>
+                </div>
+                <div class="t-small t-orange" style="font-weight:700;">260 kcal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ BMI ══════════ -->
+    <div class="sw" data-g="health">
+      <p class="slabel">BMI & Body</p>
+      <div class="phone">
+        <div class="screen-hero" style="height:200px;">
+          <div
+            style="position:absolute;inset:0;background:linear-gradient(160deg,#C8E6C9 0%,#93C795 60%,#6BAD72 100%);">
+          </div>
+          <div style="position:absolute;top:12px;left:16px;right:16px;">
+            <div class="sbar-time" style="color:white;font-size:11px;margin-bottom:12px;">9:41</div>
+            <div class="t-label" style="color:rgba(255,255,255,0.7);margin-bottom:3px;">YOUR BMI SCORE</div>
+            <div
+              style="font-family:'Playfair Display',serif;font-size:58px;font-weight:700;color:white;letter-spacing:-2px;line-height:1;">
+              22.4</div>
+            <span class="pill pill-white" style="font-size:9px;margin-top:6px;display:inline-flex;">Normal Weight</span>
+          </div>
+          <div class="hero-overlay" style="height:60px;background:linear-gradient(transparent,var(--cream));"></div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div class="sp" style="padding-top:10px;">
+            <div class="gc" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-around;margin-bottom:10px;">
+                <div style="text-align:center;">
+                  <div class="t-title" style="color:var(--sage-dark);">175 cm</div>
+                  <div class="t-label">Height</div>
+                </div>
+                <div style="text-align:center;">
+                  <div class="t-title" style="color:var(--sage-dark);">68.5 kg</div>
+                  <div class="t-label">Weight</div>
+                </div>
+              </div>
+              <!-- BMI Scale -->
+              <div class="t-label" style="margin-bottom:6px;">BMI SCALE</div>
+              <div class="bmi-scale">
+                <div class="bmi-marker" style="left:43%;"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:6px;">
+                <div style="text-align:center;flex:1;">
+                  <div style="width:8px;height:8px;border-radius:50%;background:#6BB6E8;margin:0 auto 2px;"></div>
+                  <div style="font-size:7px;font-weight:700;color:var(--text3);">Under</div>
+                  <div style="font-size:6px;color:var(--text4);">&lt;18.5</div>
+                </div>
+                <div style="text-align:center;flex:1;">
+                  <div style="width:8px;height:8px;border-radius:50%;background:var(--sage);margin:0 auto 2px;"></div>
+                  <div style="font-size:7px;font-weight:700;color:var(--sage-dark);">Normal</div>
+                  <div style="font-size:6px;color:var(--text4);">18.5–25</div>
+                </div>
+                <div style="text-align:center;flex:1;">
+                  <div style="width:8px;height:8px;border-radius:50%;background:#F5A882;margin:0 auto 2px;"></div>
+                  <div style="font-size:7px;font-weight:700;color:var(--text3);">Over</div>
+                  <div style="font-size:6px;color:var(--text4);">25–30</div>
+                </div>
+                <div style="text-align:center;flex:1;">
+                  <div style="width:8px;height:8px;border-radius:50%;background:#D96B6B;margin:0 auto 2px;"></div>
+                  <div style="font-size:7px;font-weight:700;color:var(--text3);">Obese</div>
+                  <div style="font-size:6px;color:var(--text4);">&gt;30</div>
+                </div>
+              </div>
+            </div>
+            <!-- Body Figure Selector -->
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-title" style="margin-bottom:12px;">Body Shape — Based on BMI</div>
+              <div style="display:flex;gap:10px;justify-content:center;overflow-x:auto;">
+                <div style="text-align:center;opacity:0.45;flex-shrink:0;">
+                  <svg width="36" height="70" viewBox="0 0 36 70">
+                    <ellipse cx="18" cy="12" rx="9" ry="9" fill="#A8D5AA" />
+                    <rect x="12" y="20" width="12" height="28" rx="4" fill="#A8D5AA" />
+                    <rect x="5" y="22" width="7" height="20" rx="3" fill="#A8D5AA" />
+                    <rect x="24" y="22" width="7" height="20" rx="3" fill="#A8D5AA" />
+                    <rect x="12" y="47" width="5" height="20" rx="3" fill="#A8D5AA" />
+                    <rect x="19" y="47" width="5" height="20" rx="3" fill="#A8D5AA" />
+                  </svg>
+                  <div class="t-label" style="font-size:7px;margin-top:4px;">Under</div>
+                </div>
+                <div
+                  style="text-align:center;flex-shrink:0;outline:2.5px solid var(--sage);outline-offset:4px;border-radius:8px;">
+                  <svg width="36" height="70" viewBox="0 0 36 70">
+                    <ellipse cx="18" cy="12" rx="10" ry="10" fill="#4A7A5A" />
+                    <rect x="11" y="21" width="14" height="28" rx="5" fill="#4A7A5A" />
+                    <rect x="4" y="23" width="8" height="20" rx="3" fill="#4A7A5A" />
+                    <rect x="24" y="23" width="8" height="20" rx="3" fill="#4A7A5A" />
+                    <rect x="11" y="48" width="6" height="20" rx="3" fill="#4A7A5A" />
+                    <rect x="19" y="48" width="6" height="20" rx="3" fill="#4A7A5A" />
+                  </svg>
+                  <div class="t-label" style="font-size:7px;margin-top:4px;color:var(--sage-dark);font-weight:900;">
+                    Normal</div>
+                </div>
+                <div style="text-align:center;opacity:0.45;flex-shrink:0;">
+                  <svg width="36" height="70" viewBox="0 0 36 70">
+                    <ellipse cx="18" cy="12" rx="11" ry="11" fill="#A8D5AA" />
+                    <ellipse cx="18" cy="36" rx="14" ry="16" fill="#A8D5AA" />
+                    <rect x="3" y="24" width="7" height="18" rx="3" fill="#A8D5AA" />
+                    <rect x="26" y="24" width="7" height="18" rx="3" fill="#A8D5AA" />
+                    <rect x="11" y="50" width="6" height="18" rx="3" fill="#A8D5AA" />
+                    <rect x="19" y="50" width="6" height="18" rx="3" fill="#A8D5AA" />
+                  </svg>
+                  <div class="t-label" style="font-size:7px;margin-top:4px;">Over</div>
+                </div>
+                <div style="text-align:center;opacity:0.45;flex-shrink:0;">
+                  <svg width="36" height="70" viewBox="0 0 36 70">
+                    <ellipse cx="18" cy="12" rx="12" ry="12" fill="#A8D5AA" />
+                    <ellipse cx="18" cy="38" rx="16" ry="19" fill="#A8D5AA" />
+                    <rect x="1" y="26" width="7" height="16" rx="3" fill="#A8D5AA" />
+                    <rect x="28" y="26" width="7" height="16" rx="3" fill="#A8D5AA" />
+                    <rect x="10" y="55" width="7" height="14" rx="3" fill="#A8D5AA" />
+                    <rect x="19" y="55" width="7" height="14" rx="3" fill="#A8D5AA" />
+                  </svg>
+                  <div class="t-label" style="font-size:7px;margin-top:4px;">Obese</div>
+                </div>
+              </div>
+            </div>
+            <div class="gc">
+              <div class="t-title" style="margin-bottom:8px;">Ideal Weight Range</div>
+              <div style="display:flex;justify-content:space-around;align-items:center;">
+                <div style="text-align:center;">
+                  <div class="t-title" style="color:var(--text2);">62 kg</div>
+                  <div class="t-label">Min</div>
+                </div>
+                <div style="text-align:center;background:rgba(123,174,127,0.12);border-radius:14px;padding:10px 16px;">
+                  <div class="t-title" style="color:var(--sage-dark);font-size:18px;">65 kg</div>
+                  <div class="t-label t-sage">Ideal</div>
+                </div>
+                <div style="text-align:center;">
+                  <div class="t-title" style="color:var(--text2);">75 kg</div>
+                  <div class="t-label">Max</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ SLEEP ══════════ -->
+    <div class="sw" data-g="health">
+      <p class="slabel">Sleep Log</p>
+      <div class="phone">
+        <div class="sbar" style="background:white;"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp" style="padding-top:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">Sleep</div>
+              <span class="pill pill-green">20/20 pts</span>
+            </div>
+            <div class="gc-dark" style="display:flex;gap:16px;align-items:center;margin-bottom:10px;">
+              <div>
+                <div class="t-label" style="color:rgba(255,255,255,0.6);margin-bottom:3px;">LAST NIGHT</div>
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:46px;font-weight:700;color:white;line-height:1;">
+                  7.5</div>
+                <div class="t-body" style="color:rgba(255,255,255,0.6);">hours · Good</div>
+              </div>
+              <div style="flex:1;">
+                <div class="t-label" style="color:rgba(255,255,255,0.6);margin-bottom:6px;">SLEEP SCORE</div>
+                <div
+                  style="height:8px;border-radius:4px;background:rgba(255,255,255,0.15);overflow:hidden;margin-bottom:8px;">
+                  <div
+                    style="height:100%;width:100%;border-radius:4px;background:linear-gradient(90deg,#A8D5AA,#C8E6C9);">
+                  </div>
+                </div>
+                <span class="pill pill-green" style="font-size:9px;">Excellent</span>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-title" style="margin-bottom:12px;">Log Tonight</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+                <div><span class="inp-label">BEDTIME</span><input class="inp" value="11:30 PM"></div>
+                <div><span class="inp-label">WAKE TIME</span><input class="inp" value="07:00 AM"></div>
+              </div>
+              <div
+                style="background:rgba(123,174,127,0.1);border:1.5px solid rgba(123,174,127,0.2);border-radius:14px;padding:12px;text-align:center;margin-bottom:12px;">
+                <div class="t-label t-sage" style="margin-bottom:3px;">DURATION</div>
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--sage-dark);">
+                  7.5 hours</div>
+              </div>
+              <div class="t-label" style="margin-bottom:8px;">SLEEP QUALITY</div>
+              <div style="display:flex;gap:6px;margin-bottom:14px;">
+                <div
+                  style="flex:1;background:rgba(123,174,127,0.08);border:1.5px solid rgba(123,174,127,0.18);border-radius:12px;padding:8px;text-align:center;">
+                  <div class="t-label">Poor</div>
+                </div>
+                <div
+                  style="flex:1;background:rgba(123,174,127,0.08);border:1.5px solid rgba(123,174,127,0.18);border-radius:12px;padding:8px;text-align:center;">
+                  <div class="t-label">Okay</div>
+                </div>
+                <div style="flex:1;background:var(--sage);border-radius:12px;padding:8px;text-align:center;">
+                  <div class="t-label" style="color:white;">Good</div>
+                </div>
+                <div
+                  style="flex:1;background:rgba(123,174,127,0.08);border:1.5px solid rgba(123,174,127,0.18);border-radius:12px;padding:8px;text-align:center;">
+                  <div class="t-label">Great</div>
+                </div>
+              </div>
+              <button class="btn btn-sage">Save Sleep Log</button>
+            </div>
+            <!-- Week view -->
+            <div class="t-label" style="margin-bottom:8px;">THIS WEEK</div>
+            <div class="sleep-week">
+              <div class="sleep-day active">
+                <div class="t-label" style="color:white;font-size:7px;">Mon</div>
+                <div style="font-size:9px;font-weight:700;color:white;">7.5</div>
+              </div>
+              <div class="sleep-day active">
+                <div class="t-label" style="color:white;font-size:7px;">Tue</div>
+                <div style="font-size:9px;font-weight:700;color:white;">8</div>
+              </div>
+              <div class="sleep-day">
+                <div class="t-label" style="font-size:7px;">Wed</div>
+                <div style="font-size:9px;font-weight:700;color:var(--red);">5</div>
+              </div>
+              <div class="sleep-day active">
+                <div class="t-label" style="color:white;font-size:7px;">Thu</div>
+                <div style="font-size:9px;font-weight:700;color:white;">7</div>
+              </div>
+              <div class="sleep-day active">
+                <div class="t-label" style="color:white;font-size:7px;">Fri</div>
+                <div style="font-size:9px;font-weight:700;color:white;">7.5</div>
+              </div>
+              <div class="sleep-day">
+                <div class="t-label" style="font-size:7px;">Sat</div>
+                <div style="font-size:9px;font-weight:700;color:var(--text2);">—</div>
+              </div>
+              <div class="sleep-day">
+                <div class="t-label" style="font-size:7px;">Sun</div>
+                <div style="font-size:9px;font-weight:700;color:var(--text2);">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ AI CHAT ══════════ -->
+    <div class="sw" data-g="ai">
+      <p class="slabel">AI Chat</p>
+      <div class="phone">
+        <div class="chat-hdr">
+          <div class="chat-av"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
+              stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4l3 3" />
+            </svg></div>
+          <div>
+            <div class="t-small" style="font-weight:700;">FitBharat AI</div>
+            <div class="t-label t-sage">Online · Knows your full profile</div>
+          </div>
+          <div style="margin-left:auto;"><span class="pill pill-sage" style="font-size:8px;">Gemini</span></div>
+        </div>
+        <div style="position:relative;z-index:5;height:calc(640px - 62px);overflow:hidden;background:var(--cream);">
+          <div
+            style="height:100%;overflow-y:auto;padding:14px 12px 80px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none;">
+            <div class="msg-ai">Hi Swayam — BMI 22.4, today: 1,840 / 2,200 kcal. Knee injury noted. How can I help?
+            </div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <div class="chip">Workout advice</div>
+              <div class="chip">Meal ideas</div>
+              <div class="chip">Recovery tips</div>
+            </div>
+            <div class="msg-user" style="align-self:flex-end;">I have a knee injury. What exercises for leg day?</div>
+            <div class="msg-ai">With your knee injury, here are safe alternatives:<br><br><b>Safe:</b><br>· Seated Leg
+              Extension (light)<br>· Lying Leg Curl<br>· Hip Abduction<br><br><b>Avoid:</b><br>· Squats · Lunges ·
+              Jumps<br><br>Want a full modified leg plan?</div>
+            <div class="msg-user" style="align-self:flex-end;">Yes. And recovery foods?</div>
+            <div class="msg-ai">For knee recovery focus on:<br><br>· Haldi Doodh — anti-inflammatory<br>· Omega-3 —
+              flaxseeds<br>· Amla — collagen repair<br><br>You're at 89% protein today — great for recovery.</div>
+          </div>
+          <div class="chat-inp-bar">
+            <input class="chat-inp" placeholder="Ask anything about your fitness...">
+            <div class="send-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white"
+                stroke-width="2.5" stroke-linecap="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ MOOD HISTORY ══════════ -->
+    <div class="sw" data-g="ai">
+      <p class="slabel">Mood & Energy</p>
+      <div class="phone">
+        <div class="sbar" style="background:white;"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp" style="padding-top:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">Mood & Energy</div>
+              <span class="pill pill-sage">7 days</span>
+            </div>
+            <div class="gc-sage" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-around;text-align:center;">
+                <div>
+                  <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--text);">
+                    3.8</div>
+                  <div class="t-label">Avg Mood</div>
+                </div>
+                <div style="width:1px;background:rgba(123,174,127,0.2);"></div>
+                <div>
+                  <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--text);">
+                    3.5</div>
+                  <div class="t-label">Avg Energy</div>
+                </div>
+                <div style="width:1px;background:rgba(123,174,127,0.2);"></div>
+                <div>
+                  <div
+                    style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--sage-dark);">
+                    Low</div>
+                  <div class="t-label">Avg Stress</div>
+                </div>
+              </div>
+            </div>
+            <div class="insight" style="margin-bottom:8px;">
+              <div class="t-small" style="font-weight:700;margin-bottom:4px;">Sleep → Energy Pattern Found</div>
+              <div class="t-body">Energy is 40% higher on days with 7+ hours sleep.</div>
+              <div class="t-label t-sage" style="margin-top:6px;">Maintain 7–8hr sleep schedule</div>
+            </div>
+            <div class="insight warn" style="margin-bottom:12px;">
+              <div class="t-small" style="font-weight:700;margin-bottom:4px;">Wednesday Energy Dip</div>
+              <div class="t-body">Energy drops to 2/5. Correlates with skipping breakfast.</div>
+              <div class="t-label t-orange" style="margin-top:6px;">Eat breakfast before 9am on Wednesdays</div>
+            </div>
+            <div class="t-title" style="margin-bottom:10px;">This Week</div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
+              <div
+                style="text-align:center;background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:10px;padding:7px 2px;box-shadow:0 2px 8px rgba(74,122,90,0.06);">
+                <div style="width:10px;height:10px;border-radius:50%;background:#4CAF72;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;">Mon</div>
+                <div style="font-size:9px;font-weight:700;color:var(--sage-dark);">4</div>
+              </div>
+              <div
+                style="text-align:center;background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:10px;padding:7px 2px;box-shadow:0 2px 8px rgba(74,122,90,0.06);">
+                <div style="width:10px;height:10px;border-radius:50%;background:#4CAF72;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;">Tue</div>
+                <div style="font-size:9px;font-weight:700;color:var(--sage-dark);">4</div>
+              </div>
+              <div
+                style="text-align:center;background:white;border:1.5px solid rgba(217,107,107,0.2);border-radius:10px;padding:7px 2px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#D96B6B;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;">Wed</div>
+                <div style="font-size:9px;font-weight:700;color:var(--red);">2</div>
+              </div>
+              <div
+                style="text-align:center;background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:10px;padding:7px 2px;box-shadow:0 2px 8px rgba(74,122,90,0.06);">
+                <div style="width:10px;height:10px;border-radius:50%;background:#7BAE7F;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;">Thu</div>
+                <div style="font-size:9px;font-weight:700;color:var(--sage-dark);">3</div>
+              </div>
+              <div
+                style="text-align:center;background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:10px;padding:7px 2px;box-shadow:0 2px 8px rgba(74,122,90,0.06);">
+                <div style="width:10px;height:10px;border-radius:50%;background:#4CAF72;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;">Fri</div>
+                <div style="font-size:9px;font-weight:700;color:var(--sage-dark);">5</div>
+              </div>
+              <div style="text-align:center;background:var(--sage);border-radius:10px;padding:7px 2px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:white;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;color:white;">Sat</div>
+                <div style="font-size:9px;font-weight:700;color:white;">4</div>
+              </div>
+              <div
+                style="text-align:center;background:white;border:1.5px solid rgba(123,174,127,0.15);border-radius:10px;padding:7px 2px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#A8BEA9;margin:0 auto 3px;"></div>
+                <div class="t-label" style="font-size:7px;">Sun</div>
+                <div style="font-size:9px;font-weight:700;color:var(--text4);">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ ANTI-AGING ══════════ -->
+    <div class="sw" data-g="ai">
+      <p class="slabel">Longevity AI</p>
+      <div class="phone">
+        <div class="screen-hero" style="height:190px;">
+          <div
+            style="position:absolute;inset:0;background:linear-gradient(160deg,#B8DDB9 0%,#7AAD7C 50%,#4A7A5A 100%);">
+          </div>
+          <div style="position:absolute;top:12px;left:16px;right:16px;">
+            <div class="sbar-time" style="color:rgba(255,255,255,0.8);font-size:11px;margin-bottom:12px;">9:41</div>
+            <div class="t-label" style="color:rgba(255,255,255,0.7);margin-bottom:3px;">YOUR BIOLOGICAL AGE</div>
+            <div
+              style="font-family:'Playfair Display',serif;font-size:62px;font-weight:700;color:white;line-height:1;letter-spacing:-2px;">
+              18</div>
+            <div class="t-body" style="color:rgba(255,255,255,0.75);">vs chronological age 20</div>
+          </div>
+          <div class="hero-overlay" style="height:60px;background:linear-gradient(transparent,var(--cream));"></div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div class="sp" style="padding-top:10px;">
+            <div class="gc" style="margin-bottom:10px;border:1.5px solid rgba(123,174,127,0.2);">
+              <div class="t-label t-sage" style="margin-bottom:4px;">AI ANALYSIS</div>
+              <div class="t-body">Your consistent sleep and active lifestyle is keeping you biologically younger. Keep
+                it up.</div>
+            </div>
+            <div class="insight" style="margin-bottom:8px;">
+              <div class="t-small" style="font-weight:700;margin-bottom:4px;">Sleep is your superpower</div>
+              <div class="t-body">7.5hr sleep reduces cortisol and slows cellular aging significantly.</div>
+            </div>
+            <div class="insight warn" style="margin-bottom:10px;">
+              <div class="t-small" style="font-weight:700;margin-bottom:4px;">Reduce refined carbs</div>
+              <div class="t-body">High glycemic foods accelerate skin aging. Replace white rice with brown rice 2x/week.
+              </div>
+              <div class="t-label t-orange" style="margin-top:6px;">Indian tip — Add rajma & dal for lower GI</div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-title" style="margin-bottom:10px;">Top Anti-Aging Foods for You</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span class="pill pill-sage">Amla</span>
+                <span class="pill pill-glass">Ghee (mod)</span>
+                <span class="pill pill-sage">Haldi</span>
+                <span class="pill pill-glass">Rajma</span>
+                <span class="pill pill-sage">Methi</span>
+                <span class="pill pill-glass">Moringa</span>
+              </div>
+            </div>
+            <div class="gc">
+              <div class="t-title" style="margin-bottom:8px;">Daily Habit</div>
+              <div
+                style="background:rgba(123,174,127,0.1);border:1.5px solid rgba(123,174,127,0.2);border-radius:14px;padding:12px;">
+                <div class="t-body">Start each morning with warm haldi-ginger water before chai. Reduces inflammation
+                  markers over 30 days.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ AI WEEKLY PLAN ══════════ -->
+    <div class="sw" data-g="ai">
+      <p class="slabel">AI Weekly Plan</p>
+      <div class="phone">
+        <div class="sbar" style="background:white;"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp" style="padding-top:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;">Weekly Plan</div>
+              <button class="btn-sm-white">Regenerate</button>
+            </div>
+            <div class="gc" style="border-left:3px solid var(--orange);margin-bottom:12px;">
+              <div class="t-label t-orange" style="margin-bottom:4px;">AI GENERATED</div>
+              <div class="t-title">Progressive Overload Week</div>
+              <div class="t-body t-muted" style="margin-top:2px;">Knee injury aware · Weight loss · 5 active days</div>
+            </div>
+            <div class="day-card">
+              <div class="day-dot">MON</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Upper Body Push</div>
+                <div class="t-label" style="margin-top:2px;">Chest · Shoulders · Triceps · 45 mins</div>
+              </div><span class="pill pill-sage" style="font-size:8px;">Today</span>
+            </div>
+            <div class="day-card">
+              <div class="day-dot">TUE</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Modified Leg Day</div>
+                <div class="t-label" style="margin-top:2px;">Hip-focused · Knee safe · 40 mins</div>
+              </div><span class="pill pill-orange" style="font-size:8px;">Safe</span>
+            </div>
+            <div class="day-card">
+              <div class="day-dot rest">WED</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Active Recovery</div>
+                <div class="t-label" style="margin-top:2px;">Light walk + stretching · 20 mins</div>
+              </div>
+            </div>
+            <div class="day-card">
+              <div class="day-dot">THU</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Upper Body Pull</div>
+                <div class="t-label" style="margin-top:2px;">Back · Biceps · Rear Delts · 48 mins</div>
+              </div>
+            </div>
+            <div class="day-card">
+              <div class="day-dot rest">FRI</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Rest Day</div>
+                <div class="t-label" style="margin-top:2px;">Recovery is growth</div>
+              </div>
+            </div>
+            <div class="day-card">
+              <div class="day-dot">SAT</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Full Body + Cardio</div>
+                <div class="t-label" style="margin-top:2px;">Low impact · Fat burning · 55 mins</div>
+              </div>
+            </div>
+            <div class="day-card">
+              <div class="day-dot rest">SUN</div>
+              <div style="flex:1;">
+                <div class="t-small" style="font-weight:700;">Rest & Meal Prep</div>
+                <div class="t-label" style="margin-top:2px;">Prepare for next week</div>
+              </div>
+            </div>
+            <div class="gc" style="margin-top:4px;">
+              <div class="t-label t-sage" style="margin-bottom:4px;">NUTRITION TIP</div>
+              <div class="t-body">On leg day, increase protein to 180g to support muscle recovery.</div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PROFILE ══════════ -->
+    <div class="sw" data-g="profile">
+      <p class="slabel">Profile</p>
+      <div class="phone">
+        <div class="screen-hero" style="height:170px;">
+          <div
+            style="position:absolute;inset:0;background:linear-gradient(160deg,#C8E6C9 0%,#93C795 60%,#6BAD72 100%);">
+          </div>
+          <div
+            style="position:absolute;top:12px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:flex-start;">
+            <div class="sbar-time" style="color:white;font-size:11px;">9:41</div>
+            <button class="btn-sm-white" style="font-size:10px;padding:6px 12px;">Save</button>
+          </div>
+          <div style="position:absolute;bottom:30px;left:16px;right:16px;display:flex;align-items:flex-end;gap:12px;">
+            <div class="avatar-circle"
+              style="background:white;color:var(--sage-dark);font-family:'Syne',sans-serif;font-size:24px;width:60px;height:60px;box-shadow:0 4px 16px rgba(74,122,90,0.25);flex-shrink:0;">
+              S</div>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:white;">Swayam Gurjar</div>
+              <div class="t-small" style="color:rgba(255,255,255,0.75);">swayam@gmail.com</div>
+              <div style="display:flex;gap:5px;margin-top:5px;"><span class="pill pill-white"
+                  style="font-size:8px;">Gain Muscle</span><span class="pill pill-white"
+                  style="font-size:8px;color:var(--green);">BMI 22.4</span></div>
+            </div>
+          </div>
+          <div class="hero-overlay" style="height:50px;background:linear-gradient(transparent,var(--cream));"></div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div class="sp" style="padding-top:10px;">
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-label" style="margin-bottom:10px;">PERSONAL INFO</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div><span class="inp-label">AGE</span><input class="inp" value="20"></div>
+                <div><span class="inp-label">GENDER</span><input class="inp" value="Male"></div>
+                <div><span class="inp-label">HEIGHT (cm)</span><input class="inp" value="175"></div>
+                <div><span class="inp-label">WEIGHT (kg)</span><input class="inp" value="68.5"></div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-label" style="margin-bottom:8px;">MY GOAL</div>
+              <div class="goal-row">
+                <div class="goal-pill">Lose Weight</div>
+                <div class="goal-pill active">Gain Muscle</div>
+                <div class="goal-pill">Stay Fit</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div style="background:rgba(123,174,127,0.08);border-radius:12px;padding:10px;text-align:center;">
+                  <div
+                    style="font-family:'Playfair Display',serif;font-size:20px;color:var(--sage-dark);font-weight:700;">
+                    2,200</div>
+                  <div class="t-label">Calories</div>
+                </div>
+                <div style="background:rgba(123,174,127,0.08);border-radius:12px;padding:10px;text-align:center;">
+                  <div
+                    style="font-family:'Playfair Display',serif;font-size:20px;color:var(--sage-dark);font-weight:700;">
+                    160g</div>
+                  <div class="t-label">Protein</div>
+                </div>
+              </div>
+            </div>
+            <div class="link-card">
+              <div class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                  stroke-width="2" stroke-linecap="round">
+                  <path
+                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7z" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title">Health Profile</div>
+                <div class="t-small t-muted">Conditions, injuries, diet</div>
+              </div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+            <div class="link-card">
+              <div class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A7A5A"
+                  stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title">Weekly AI Plan</div>
+                <div class="t-small t-muted">Gemini-powered plan</div>
+              </div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+            <div class="link-card">
+              <div class="link-icon" style="background:linear-gradient(135deg,#FFE0D0,#FFD0BC);"><svg width="18"
+                  height="18" viewBox="0 0 24 24" fill="none" stroke="#E8845A" stroke-width="2" stroke-linecap="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title">Anti-Aging Analysis</div>
+                <div class="t-small t-muted">Longevity insights</div>
+              </div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+            <div class="link-card" style="border-left:3px solid var(--red);">
+              <div class="link-icon" style="background:rgba(217,107,107,0.1);"><svg width="18" height="18"
+                  viewBox="0 0 24 24" fill="none" stroke="#D96B6B" stroke-width="2" stroke-linecap="round">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg></div>
+              <div style="flex:1;">
+                <div class="t-title" style="color:var(--red);">Logout</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg><span class="ti-label">Home</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M6 4v6a6 6 0 0012 0V4" />
+              <line x1="12" y1="4" x2="12" y2="2" />
+            </svg><span class="ti-label">Workout</span></div>
+          <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="#A8BEA9" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M18 8h1a4 4 0 010 8h-1" />
+              <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
+            </svg><span class="ti-label">Nutrition</span></div>
+          <div class="ti active"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+              stroke-linecap="round">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg><span class="ti-label">Profile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ HEALTH PROFILE ══════════ -->
+    <div class="sw" data-g="profile">
+      <p class="slabel">Medical Profile</p>
+      <div class="phone">
+        <div class="sbar" style="background:var(--sage-ultra);"><span class="sbar-time">9:41</span></div>
+        <div class="sc" style="background:var(--cream);">
+          <div class="sp">
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-top:6px;">
+              <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;">Health Profile</div>
+              <button class="btn-sm-sage">Save</button>
+            </div>
+            <div
+              style="background:rgba(232,132,90,0.1);border:1.5px solid rgba(232,132,90,0.2);border-radius:14px;padding:10px 12px;margin-bottom:12px;">
+              <div class="t-body t-orange">AI uses this for safe, personalized advice. All optional.</div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-label" style="margin-bottom:8px;">HEALTH CONDITIONS</div>
+              <div class="cond-grid">
+                <div class="cond-btn">Diabetes</div>
+                <div class="cond-btn active">Hypertension</div>
+                <div class="cond-btn">Thyroid</div>
+                <div class="cond-btn">PCOD</div>
+                <div class="cond-btn">Asthma</div>
+                <div class="cond-btn">None</div>
+              </div>
+              <div class="t-label" style="margin-bottom:8px;">CURRENT INJURIES</div>
+              <div class="cond-grid">
+                <div class="cond-btn active">Knee</div>
+                <div class="cond-btn">Back</div>
+                <div class="cond-btn">Shoulder</div>
+                <div class="cond-btn">Ankle</div>
+                <div class="cond-btn">Wrist</div>
+                <div class="cond-btn">None</div>
+              </div>
+              <div class="t-label" style="margin-bottom:8px;">DIETARY RESTRICTIONS</div>
+              <div class="cond-grid">
+                <div class="cond-btn active">Vegetarian</div>
+                <div class="cond-btn">Vegan</div>
+                <div class="cond-btn">Gluten Free</div>
+                <div class="cond-btn">Lactose</div>
+                <div class="cond-btn">Nut Allergy</div>
+                <div class="cond-btn">None</div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-label" style="margin-bottom:8px;">PROFESSION</div>
+              <div class="goal-row">
+                <div class="goal-pill active">Student</div>
+                <div class="goal-pill">Desk Job</div>
+                <div class="goal-pill">Physical</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div class="t-title">Recovery Mode</div>
+                  <div class="t-small t-muted">Only light exercises</div>
+                </div>
+                <div class="toggle">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="gc">
+              <span class="inp-label">MEDICATIONS (optional)</span>
+              <input class="inp" placeholder="e.g. Metformin 500mg" style="margin-bottom:12px;">
+              <button class="btn btn-sage">Save Health Profile</button>
+            </div>
+          </div>
+        </div>
+        <div class="ai-fab">
+          <div class="ai-pulse"></div><span class="ai-fab-txt">Ask AI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ ADMIN ══════════ -->
+    <div class="sw" data-g="profile">
+      <p class="slabel">Admin Panel</p>
+      <div class="phone">
+        <div class="screen-hero" style="height:160px;">
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,#2D5A4A 0%,#1A3830 100%);"></div>
+          <div style="position:absolute;top:12px;left:16px;">
+            <div class="sbar-time" style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:10px;">9:41</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;">Admin Panel</div>
+              <span class="pill pill-orange" style="font-size:8px;">Admin Only</span>
+            </div>
+            <div class="t-body" style="color:rgba(255,255,255,0.55);margin-top:2px;">FitBharat · Backend Stats</div>
+          </div>
+          <div class="hero-overlay" style="height:50px;background:linear-gradient(transparent,var(--cream));"></div>
+        </div>
+        <div class="sc" style="padding-top:0;">
+          <div class="sp" style="padding-top:10px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+              <div class="admin-stat">
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--sage-dark);">47
+                </div>
+                <div class="t-label">Total Users</div>
+              </div>
+              <div class="admin-stat">
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--sage-dark);">8
+                </div>
+                <div class="t-label">Active Today</div>
+              </div>
+              <div class="admin-stat">
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--sage-dark);">
+                  312</div>
+                <div class="t-label">Workouts</div>
+              </div>
+              <div class="admin-stat">
+                <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--orange);">
+                  489</div>
+                <div class="t-label">Meals Logged</div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div class="t-title">Avg Health Score</div>
+                <div
+                  style="font-family:'Playfair Display',serif;font-size:28px;color:var(--sage-dark);font-weight:700;">71
+                </div>
+              </div>
+              <div class="prog-wrap">
+                <div class="prog-fill" style="width:71%;"></div>
+              </div>
+            </div>
+            <div class="gc" style="margin-bottom:10px;">
+              <div class="t-title" style="margin-bottom:10px;">Top Exercises</div>
+              <div class="t-body" style="line-height:2.2;">1. Bench Press — 48 sessions<br>2. Squats — 41 sessions<br>3.
+                Pull-ups — 38 sessions</div>
+            </div>
+            <div class="gc">
+              <div class="t-title" style="margin-bottom:10px;">Top Foods Logged</div>
+              <div class="t-body" style="line-height:2.2;">1. Dal — 89 times<br>2. Rice — 76 times<br>3. Roti — 71 times
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <script>
+    function show(group, el) {
+      document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.sw').forEach(s => {
+        if (group === 'all') {
+          s.classList.add('show');
+        } else {
+          s.classList.toggle('show', s.dataset.g === group);
+        }
+      });
+      // Smooth scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Add hover effects to cards dynamically
+    document.querySelectorAll('.wcard, .link-card, .day-card').forEach(card => {
+      card.style.transition = 'transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease';
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-3px)';
+        card.style.boxShadow = '0 8px 24px rgba(74,122,90,0.15)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+        card.style.boxShadow = '';
+      });
+    });
+
+    // Toggle interaction
+    document.querySelectorAll('.toggle').forEach(t => {
+      t.addEventListener('click', () => t.classList.toggle('on'));
+    });
+
+    // Goal pill interaction
+    document.querySelectorAll('.goal-pill').forEach(p => {
+      p.addEventListener('click', () => {
+        const row = p.closest('.goal-row');
+        if (row) row.querySelectorAll('.goal-pill').forEach(pp => pp.classList.remove('active'));
+        p.classList.add('active');
+      });
+    });
+
+    // Cond btn interaction
+    document.querySelectorAll('.cond-btn').forEach(b => {
+      b.addEventListener('click', () => b.classList.toggle('active'));
+    });
+
+    // Mood btn interaction
+    document.querySelectorAll('.mood-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        const row = b.closest('.mood-row');
+        if (row) row.querySelectorAll('.mood-btn').forEach(bb => bb.classList.remove('sel'));
+        b.classList.add('sel');
+      });
+    });
+
+    // AI FAB ripple
+    document.querySelectorAll('.ai-fab').forEach(fab => {
+      fab.addEventListener('click', () => {
+        fab.style.transform = 'scale(0.95)';
+        setTimeout(() => fab.style.transform = '', 150);
+      });
+    });
+
+    // Tab bar active
+    document.querySelectorAll('.tabbar .ti').forEach(ti => {
+      ti.addEventListener('click', () => {
+        const bar = ti.closest('.tabbar');
+        if (bar) bar.querySelectorAll('.ti').forEach(t => t.classList.remove('active'));
+        ti.classList.add('active');
+      });
+    });
+  </script>
+</body>
+
+</html>

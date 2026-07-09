@@ -1,0 +1,8 @@
+# FitBharat Robots Crawlers Config
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /settings/
+Disallow: /onboarding/
+
+Sitemap: https://fitbharat-web.vercel.app/sitemap.xml
